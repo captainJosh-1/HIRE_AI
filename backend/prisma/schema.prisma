@@ -51,5 +51,20 @@ model RecruiterProfile {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user    User     @relation(fields: [userId], references: [id])
+  company Company?
+}
+
+model Company {
+  id                 Int      @id @default(autoincrement())
+  recruiterProfileId Int      @unique
+  name               String
+  description        String?
+  website            String?
+  location           String?
+  industrry          String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  recruiterProfile RecruiterProfile @relation(fields: [recruiterProfileId], references: [id])
 }
