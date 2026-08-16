@@ -17,6 +17,14 @@ enum UserRole {
   RECRUITER
 }
 
+enum ApplicationStatus {
+  PENDING
+  REVIEWED
+  SHORTLISTED
+  REJECTED
+  ACCEPTED
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   name      String
@@ -39,7 +47,8 @@ model JobSeekerProfile {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user         User          @relation(fields: [userId], references: [id])
+  applications Application[]
 }
 
 model RecruiterProfile {
@@ -62,9 +71,44 @@ model Company {
   description        String?
   website            String?
   location           String?
-  industrry          String?
+  industry           String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
   recruiterProfile RecruiterProfile @relation(fields: [recruiterProfileId], references: [id])
+  jobs             Job[]
+}
+
+model Job {
+  id              Int      @id @default(autoincrement())
+  companyId       Int
+  title           String
+  description     String
+  location        String?
+  salary          Int?
+  employmentType  String?
+  experienceLevel String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id])
+
+  applications Application[]
+}
+
+model Application {
+  id                 Int               @id @default(autoincrement())
+  jobSeekerProfileId Int
+  jobId              Int
+  status             ApplicationStatus @default(PENDING)
+  coverLetter        String?
+  appliedAt          DateTime          @default(now())
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  jobSeekerProfile JobSeekerProfile @relation(fields: [jobSeekerProfileId], references: [id])
+
+  job Job @relation(fields: [jobId], references: [id])
+
+  @@unique([jobSeekerProfileId, jobId])
 }
