@@ -12,7 +12,6 @@ datasource db {
   provider = "postgresql"
 }
 
-
 enum UserRole {
   JOB_SEEKER
   RECRUITER
@@ -26,4 +25,31 @@ model User {
   role      UserRole @default(JOB_SEEKER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  jobSeekerProfile JobSeekerProfile?
+  recruiterProfile RecruiterProfile?
+}
+
+model JobSeekerProfile {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  bio       String?
+  phone     String?
+  location  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model RecruiterProfile {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique
+  designation String?
+  phone       String?
+  bio         String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
 }
