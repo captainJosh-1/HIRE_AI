@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { asyncHandler } from "../middleware/asyncHandler.js";
 import { registerUser } from "../services/auth.service.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { loginUser } from "../services/auth.service.js";
 
 
 const register = asyncHandler(async (req:Request , res:Response)=>{
@@ -20,4 +21,18 @@ const register = asyncHandler(async (req:Request , res:Response)=>{
 
 });
 
-export { register };
+
+
+const login = asyncHandler(async(req , res)=>{
+
+   const { email , password } =req.body
+
+   const user = await loginUser(
+      email,
+      password,
+   );
+
+   return res.status(200).json(new ApiResponse(200,user,"User logged in successfully"))
+})
+
+export { register , login};

@@ -3,6 +3,7 @@
 import prisma from "../lib/prisma.js"
 import { ApiError } from "../utils/ApiError.js";
 import bcrypt  from "bcrypt";
+import { generateAccessToken } from "../utils/jwt.js"
 
 const registerUser = async (
     name:string,
@@ -59,4 +60,40 @@ const registerUser = async (
 };
 
 
-export { registerUser };
+//now lets login the user 
+
+const loginUser = async (
+    email:string,
+    password:string
+)=>{
+
+const currentUser = await prisma.user.findUnique({
+    where :{
+        email:email,
+    }
+})
+
+if(!currentUser) {
+    throw new ApiError(401 , "Invalid email or password")
+}
+
+const isPasswordCorrect = await bcrypt.compare(password ,currentUser.password);
+
+if(!isPasswordCorrect){
+    throw new ApiError(401 , "Invalid email or password");
+}
+
+const accessToken = generateAccessToken(
+    currentUser.id,
+    currentUser.role
+);
+
+const { password: _, ...safeUser}= currentUser;
+
+return {
+    user: safeUser,
+    accessToken
+ };
+};
+
+export { registerUser,loginUser };
