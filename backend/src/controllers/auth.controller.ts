@@ -35,4 +35,15 @@ const login = asyncHandler(async(req , res)=>{
    return res.status(200).json(new ApiResponse(200,user,"User logged in successfully"))
 })
 
-export { register , login};
+
+
+const getMe = asyncHandler(async (req, res) => {
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      req.user,
+      "User fetched successfully"
+    )
+  );
+});
+export { register , login , getMe};

@@ -13,4 +13,12 @@ const generateAccessToken =(userId:number , role :string)=>{
     );
 };
 
-export { generateAccessToken };
+
+const verifyAccessToken = (token: string)=>{
+    jwt.verify(
+        token,
+        process.env.JWT_SECRET!
+    );
+};
+
+export { generateAccessToken, verifyAccessToken};
