@@ -16,4 +16,23 @@ const getMyPofile = async( userId:number )=>{
 
     return { jobSeekerProfile }
 }
-export { getMyPofile };
+
+const updateProfile = async(
+    userId:number,
+    bio:string,
+    phone:string,
+    location:string
+)=>{
+    const jobSeekerUpdatedProfile = await prisma.jobSeekerProfile.update({
+        where:{
+            userId 
+        },
+        data:{
+            bio,
+            phone,
+            location
+        }
+    })
+    return {jobSeekerUpdatedProfile}
+}
+export { getMyPofile, updateProfile };
