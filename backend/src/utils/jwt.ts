@@ -15,7 +15,7 @@ const generateAccessToken =(userId:number , role :string)=>{
 
 
 const verifyAccessToken = (token: string)=>{
-    jwt.verify(
+   return jwt.verify(
         token,
         process.env.JWT_SECRET!
     );
