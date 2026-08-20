@@ -49,6 +49,15 @@ model JobSeekerProfile {
 
   user         User          @relation(fields: [userId], references: [id])
   applications Application[]
+
+  skills Skill[]
+}
+
+model Skill {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  jobSeekers JobSeekerProfile[]
 }
 
 model RecruiterProfile {

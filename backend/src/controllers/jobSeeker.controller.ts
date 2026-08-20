@@ -3,6 +3,8 @@ import { asyncHandler } from "../middleware/asyncHandler.js";
 import { getMyPofile } from "../services/jobSeeker.services.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { updateProfile } from "../services/jobSeeker.services.js";
+import { addSkills } from "../services/jobSeeker.services.js";
+
 const getMyProfileController = asyncHandler(async( req: Request , res:Response)=>
     {
     const { userId } =req.user!;
@@ -26,4 +28,17 @@ const updateProfileController = asyncHandler(async(req:Request , res:Response)=>
     return res.status(200).json(new ApiResponse(200 , updatedjobSeekerProfile ,"Profile is updated successfully"))
 })
 
-export { getMyProfileController , updateProfileController }
+
+const addSkillController = asyncHandler(async( req , res)=>{
+    const { name } = req.body;
+    const { userId } = req.user!
+
+    const skillsAdded = await addSkills(
+        userId,
+        name,
+    );
+
+    return res.status(200).json(new ApiResponse(200 , skillsAdded, "Skills are added successfully"))
+})
+
+export { getMyProfileController , updateProfileController ,addSkillController}
