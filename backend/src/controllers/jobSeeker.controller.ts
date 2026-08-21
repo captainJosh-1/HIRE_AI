@@ -4,7 +4,7 @@ import { getMyPofile } from "../services/jobSeeker.services.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { updateProfile } from "../services/jobSeeker.services.js";
 import { addSkills } from "../services/jobSeeker.services.js";
-
+import { getMySkills } from "../services/jobSeeker.services.js";
 const getMyProfileController = asyncHandler(async( req: Request , res:Response)=>
     {
     const { userId } =req.user!;
@@ -41,4 +41,14 @@ const addSkillController = asyncHandler(async( req , res)=>{
     return res.status(200).json(new ApiResponse(200 , skillsAdded, "Skills are added successfully"))
 })
 
-export { getMyProfileController , updateProfileController ,addSkillController}
+const getMySkillController = asyncHandler(async(req , res)=>{
+    const {userId} = req.user!
+
+    const MySkills = await getMySkills(
+        userId
+    )
+
+    return res.status(200).json(new ApiResponse(200 , MySkills,"User skills are fechted"))
+})
+
+export { getMyProfileController , updateProfileController ,addSkillController , getMySkillController}

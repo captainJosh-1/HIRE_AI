@@ -39,13 +39,7 @@ const updateProfile = async(
 const addSkills = async(
     userId:number,
     name:string
-)=>{
-    let skill = await prisma.skill.findUnique({
-        where:{
-            name
-        }
-    })
-    
+)=>{ 
     const jobseeker = await prisma.jobSeekerProfile.findUnique({
         where:{
             userId 
@@ -59,13 +53,19 @@ const addSkills = async(
         throw new ApiError(400 , "Profile not found")
     }
 
+     let skill = await prisma.skill.findUnique({
+        where:{
+            name
+        }
+    })
+
     if(!skill){
         skill = await prisma.skill.create({
             data:{
                 name
             }
         });
-    
+    }
     const alreadyHasSkill =jobseeker.skills.some(
         (existingSkill) => existingSkill.id === skill.id 
     );
@@ -92,5 +92,31 @@ const addSkills = async(
 
     return updatedProfile;
 }
-}
-export { getMyPofile, updateProfile , addSkills};
+
+const getMySkills = async(
+    userId:number
+)=>{
+    //get the user with skill table 
+    //check user by if condition then if it is there 
+    //then store the skill this user contain and return 
+    const currentUser = await prisma.JobSeekerProfile.findUnique(
+        {
+            where:{
+                userId
+            },
+            include:{
+                skills:true
+            }
+        },
+    )
+
+    if(!currentUser){
+        throw new ApiError(400 , "User didnt exist ")
+    }
+
+    const userSkills =currentUser.skills;
+
+    return userSkills;
+} 
+
+export { getMyPofile, updateProfile , addSkills , getMySkills};
