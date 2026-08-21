@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import { requireRole } from "../middleware/role.middleware.js";
-import { getMyProfileController, updateProfileController ,addSkillController , getMySkillController} from "../controllers/jobSeeker.controller.js";
+import { getMyProfileController, updateProfileController ,addSkillController , getMySkillController, deleteMySkills} from "../controllers/jobSeeker.controller.js";
 
 const router = Router();
 
@@ -34,10 +34,10 @@ router.get(
 )
 
 router.delete(
-    "/skills",
+    "/deleteskill/:skillId",
     authMiddleware,
     requireRole("JOB_SEEKER"),
-    
+    deleteMySkills
 )
 
 export { router };

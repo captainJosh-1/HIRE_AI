@@ -119,4 +119,49 @@ const getMySkills = async(
     return userSkills;
 } 
 
-export { getMyPofile, updateProfile , addSkills , getMySkills};
+const deleteMyskills = async(
+    userId:number,
+    skillId:number
+)=>{
+    const currentUser = await prisma.JobSeekerProfile.findUnique(
+        {
+            where:{
+                userId
+            },
+            include:{
+                skills:true
+            }
+        }
+    )
+    if(!currentUser){
+        throw new ApiError(400 , "User didnt exist ")
+    }
+
+    const skillExists = currentUser.skills.some(
+        (skill)=> skill.id === skillId
+    );
+
+    if(!skillExists){
+        throw new ApiError(404 , "Skill is not associated with your profile");
+    }
+
+    const deleteSkill = await prisma.JobSeekerProfile.update({
+        where:{
+            id:currentUser.id
+        },
+        data:{
+            skills:{
+                disconnect:{
+                    id:skillId
+                }
+            }
+        },
+        include:{
+            skills:true
+        }
+    });
+
+    return deleteSkill;
+    }
+
+export { getMyPofile, updateProfile , addSkills , getMySkills , deleteMyskills};
