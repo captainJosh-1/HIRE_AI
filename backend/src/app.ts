@@ -1,9 +1,11 @@
 import express from "express";
 import cors from "cors";
 
-import { router as authRouters } from "./routes/auth.routes.js";
-import {router as jobSeekerRoutes } from "./routes/jobSeeker.routes.js"
+import { router as authRouters } from "./modules/auth/auth.routes.js";
 
+ 
+import {router as profileRoutes} from "./modules/jobSeeker/profile/jobSeeker.routes.js"
+import { router as skillRoutes } from "./modules/jobSeeker/skill/skill.routes.js";
 
 const app = express();
 
@@ -15,6 +17,9 @@ app.use(express.json());
 //"/api/v1/auth"
 
 app.use("/api/v1/auth" , authRouters);
-app.use("/api/v1/job-seekers",jobSeekerRoutes)
+
+
+app.use("/api/v1/job-seekers",profileRoutes)
+app.use("/api/v1/job-seekers",skillRoutes)
 
 export default app;
