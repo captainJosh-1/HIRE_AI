@@ -17,6 +17,12 @@ enum UserRole {
   RECRUITER
 }
 
+enum TypeOfEducation {
+  FULL_TIME
+  PART_TIME
+  ONLINE
+}
+
 enum ApplicationStatus {
   PENDING
   REVIEWED
@@ -50,7 +56,8 @@ model JobSeekerProfile {
   user         User          @relation(fields: [userId], references: [id])
   applications Application[]
 
-  skills Skill[]
+  skills     Skill[]
+  educations Education[]
 }
 
 model Skill {
@@ -58,6 +65,26 @@ model Skill {
   name String @unique
 
   jobSeekers JobSeekerProfile[]
+}
+
+model Education {
+  id Int @id @default(autoincrement())
+
+  jobSeekerProfileId Int
+
+  degree            String
+  institution       String
+  branch            String
+  type              TypeOfEducation @default(FULL_TIME)
+  startYear         Int
+  endYear           Int?
+  grade             String?
+  currentlyStudying Boolean         @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  jobSeekerProfile JobSeekerProfile @relation(fields: [jobSeekerProfileId], references: [id])
 }
 
 model RecruiterProfile {
