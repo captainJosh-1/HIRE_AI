@@ -50,4 +50,24 @@ if(!jobSeeker){
 
 }
 
-export {addEducation}
+const getEducation = async(
+    userId:number
+)=>{
+    const currentUser = await prisma.jobSeekerProfile.findUnique({
+        where:{
+            userId
+        },
+        include:{
+            educations:true
+        }
+    })
+
+    if(!currentUser){
+        throw new ApiError(400 , "User doesn't exist")
+    }
+
+    const usersEdu = currentUser.educations;
+
+    return usersEdu;
+}
+export {addEducation , getEducation}

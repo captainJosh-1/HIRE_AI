@@ -1,6 +1,6 @@
 import type { Response,Request } from "express";
 import { asyncHandler } from "../../../middleware/asyncHandler.js";
-import { addEducation } from "./education.services.js";
+import { addEducation , getEducation } from "./education.services.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 
 const addEducationController = asyncHandler(async(req:Request , res:Response)=>{
@@ -32,4 +32,12 @@ const addEducationController = asyncHandler(async(req:Request , res:Response)=>{
 
     return res.status(200).json(new ApiResponse(200,addingEdu,"education is successfully added"))
 })
-export {addEducationController}
+
+const getEducationController = asyncHandler(async(req:Request , res:Response)=>{
+    const {userId} = req.user!
+
+    const getJobSeekerEdu = await getEducation(userId)
+
+    return res.status(200).json(new ApiResponse(200 , getJobSeekerEdu,"all education is fetched successully"))
+})
+export {addEducationController , getEducationController}

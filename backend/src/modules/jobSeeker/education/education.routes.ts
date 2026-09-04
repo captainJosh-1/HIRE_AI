@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../../../middleware/auth.middleware.js";
-import { addEducationController } from "./education.controller.js";
+import { addEducationController, getEducationController } from "./education.controller.js";
 
 const router = Router()
 router.post(
@@ -9,4 +9,9 @@ router.post(
     addEducationController
 )
 
+router.get(
+    "/geteducation",
+    authMiddleware,
+    getEducationController
+)
 export { router };
