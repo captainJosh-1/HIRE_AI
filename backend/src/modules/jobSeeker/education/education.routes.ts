@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../../../middleware/auth.middleware.js";
-import { addEducationController, getEducationController } from "./education.controller.js";
+import { addEducationController, deleteEducationController, getEducationController, updateEducationController } from "./education.controller.js";
 
 const router = Router()
 router.post(
@@ -14,4 +14,16 @@ router.get(
     authMiddleware,
     getEducationController
 )
+router.patch(
+    "/updateEducation/:educationId",
+    authMiddleware,
+    updateEducationController
+)
+
+router.delete(
+    "/deleteEducation/:educationId",
+    authMiddleware,
+    deleteEducationController
+)
+
 export { router };
