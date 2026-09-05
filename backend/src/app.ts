@@ -8,6 +8,7 @@ import {router as profileRoutes} from "./modules/jobSeeker/profile/jobSeeker.rou
 import { router as skillRoutes } from "./modules/jobSeeker/skill/skill.routes.js";
 import {router as eduRoutes } from "./modules/jobSeeker/education/education.routes.js"
 import {router as expiRoutes } from "./modules/jobSeeker/experience/experience.routes.js"
+import{ router as projectRoutes } from "./modules/jobSeeker/projects/project.routes.js"
 const app = express();
 
 
@@ -24,5 +25,6 @@ app.use("/api/v1/job-seekers",profileRoutes)
 app.use("/api/v1/job-seekers",skillRoutes)
 app.use("/api/v1/job-seekers",eduRoutes)
 app.use("/api/v1/job-seekers",expiRoutes)
+app.use("/api/v1/job-seekers",projectRoutes)
 
 export default app;

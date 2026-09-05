@@ -68,6 +68,7 @@ model JobSeekerProfile {
   skills      Skill[]
   educations  Education[]
   experiences Experience[]
+  projects    Project[]
 }
 
 model Skill {
@@ -110,6 +111,25 @@ model Experience {
   endDate          DateTime?
   currentlyWorking Boolean        @default(false)
   description      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  jobSeekerProfile JobSeekerProfile @relation(fields: [jobSeekerProfileId], references: [id])
+}
+
+model Project {
+  id                 Int @id @default(autoincrement())
+  jobSeekerProfileId Int
+
+  title            String
+  description      String?
+  technologies     String[]
+  projectUrl       String?
+  githubUrl        String?
+  startDate        DateTime?
+  endDate          DateTime?
+  currentlyWorking Boolean   @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
