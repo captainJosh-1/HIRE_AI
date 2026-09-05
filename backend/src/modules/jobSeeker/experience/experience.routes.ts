@@ -1,19 +1,31 @@
 import { Router } from "express";
 import { authMiddleware } from "../../../middleware/auth.middleware.js";
-import { addExperienceController, getExpirenceControllwer } from "./experience.controller.js";
+import { addExperienceController, deleteExperienceController, getExperienceController, updateExperienceController } from "./experience.controller.js";
 
 
 const router = Router()
 router.post(
-    "/addExpirence",
+    "/addExperience",
     authMiddleware,
     addExperienceController
 )
 
 router.get(
-    "/getExpirence",
+    "/getExperience",
     authMiddleware,
-    getExpirenceControllwer
+    getExperienceController
+)
+
+router.patch(
+    "/updateExperience/:experienceId",
+    authMiddleware,
+    updateExperienceController
+)
+
+router.delete(
+    "/deleteExperience/:experienceId",
+    authMiddleware,
+    deleteExperienceController
 )
 
 export { router };

@@ -1,6 +1,6 @@
 import type { Response,Request } from "express";
 import { asyncHandler } from "../../../middleware/asyncHandler.js";
-import { addExpirence, getExpirence } from "./experience.service.js";
+import { addExperience, deleteExpe, getExperience, updateExpe } from "./experience.service.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 
 
@@ -8,7 +8,7 @@ const addExperienceController = asyncHandler(async(req:Request , res:Response)=>
 
     const { userId } = req.user!
     const {
-        comapny,
+        company,
         position,
         employmentType,
         location,
@@ -18,9 +18,9 @@ const addExperienceController = asyncHandler(async(req:Request , res:Response)=>
         description
     } = req.body;
 
-    const currenetExpi = addExpirence(
+    const currenetExpe = await addExperience(
         userId,
-        comapny,
+        company,
         position,
         employmentType,
         location,
@@ -29,23 +29,57 @@ const addExperienceController = asyncHandler(async(req:Request , res:Response)=>
         currentlyWorking,
         description
     )
-    return res.status(200).json(new ApiResponse(200,currenetExpi,"Expirence is added successfully"))
+    return res.status(200).json(new ApiResponse(200,currenetExpe,"Experience is added successfully"))
 })
 
 
-const getExpirenceControllwer = asyncHandler(async(req:Request , res:Response)=>{
+const getExperienceController = asyncHandler(async(req:Request , res:Response)=>{
     const { userId } = req.user!
 
-    const usersExpirence = await getExpirence(userId)
+    const usersExperience = await getExperience(userId)
 
-    return res.status(200).json(new ApiResponse(200,usersExpirence, "Expirence is fetched sccessfully"))
+    return res.status(200).json(new ApiResponse(200,usersExperience, "Expirence is fetched sccessfully"))
 })
 
 
-const updateExpirenceController = asyncHandler(async(req:Request , res:Response)=>{
+const updateExperienceController = asyncHandler(async(req:Request , res:Response)=>{
     const { userId } = req.user!
-    const { expirenceId } = req.params
+    const experienceId = Number(req.params.experienceId);
+    const {
+        company,
+        position,
+        employmentType,
+        location,
+        startDate,
+        endDate,
+        currentlyWorking,
+        description
+    } = req.body
 
-    
+    const updateExpirence =await updateExpe(
+        userId,
+        experienceId,
+        company,
+        position,
+        location,
+        employmentType,
+        startDate,
+        endDate,
+        currentlyWorking,
+        description,
+    )
+    return res.status(200).json(new ApiResponse(200,updateExpirence,"experience is updated successfully"))
 })
-export { addExperienceController , getExpirenceControllwer}
+
+const deleteExperienceController = asyncHandler(async(req:Request , res:Response)=>{
+    const { userId } = req.user!
+    const experienceId = Number(req.params.experienceId)
+
+    const deleteExperience =await deleteExpe(
+        userId,
+        experienceId
+    )
+
+    return res.status(200).json(new ApiResponse(200, deleteExperience,"experience is deleted successfully"))
+})
+export { addExperienceController , getExperienceController, updateExperienceController,deleteExperienceController}

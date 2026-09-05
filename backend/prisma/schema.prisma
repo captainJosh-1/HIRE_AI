@@ -65,9 +65,9 @@ model JobSeekerProfile {
   user         User          @relation(fields: [userId], references: [id])
   applications Application[]
 
-  skills     Skill[]
-  educations Education[]
-  experience Experience[]
+  skills      Skill[]
+  educations  Education[]
+  experiences Experience[]
 }
 
 model Skill {
