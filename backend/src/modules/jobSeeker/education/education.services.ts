@@ -1,6 +1,5 @@
 import { ApiError } from "../../../utils/ApiError.js";
 import prisma from "../../../lib/prisma.js";
-import { asyncHandler } from "../../../middleware/asyncHandler.js";
 
 
 const addEducation = async (
