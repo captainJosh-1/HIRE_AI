@@ -31,6 +31,15 @@ enum ApplicationStatus {
   ACCEPTED
 }
 
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  INTERNSHIP
+  CONTRACT
+  FREELANCE
+  VOLUNTEER
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   name      String
@@ -58,6 +67,7 @@ model JobSeekerProfile {
 
   skills     Skill[]
   educations Education[]
+  experience Experience[]
 }
 
 model Skill {
@@ -80,6 +90,26 @@ model Education {
   endYear           Int?
   grade             String?
   currentlyStudying Boolean         @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  jobSeekerProfile JobSeekerProfile @relation(fields: [jobSeekerProfileId], references: [id])
+}
+
+model Experience {
+  id Int @id @default(autoincrement())
+
+  jobSeekerProfileId Int
+
+  company          String
+  position         String
+  employmentType   EmploymentType
+  location         String?
+  startDate        DateTime
+  endDate          DateTime?
+  currentlyWorking Boolean        @default(false)
+  description      String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
