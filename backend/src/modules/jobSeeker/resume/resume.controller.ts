@@ -1,18 +1,23 @@
 import type { Request, Response } from "express";
+import { uploadResume } from "./resume.service.js";
+import { ApiError } from "../../../utils/ApiError.js";
+import { ApiResponse } from "../../../utils/ApiResponse.js";
 
-export const uploadResumeController = (
+export const uploadResumeController = async (
   req: Request,
   res: Response
 ) => {
-  console.log(req.file);
+  if (!req.file) {
+    throw new ApiError(400, "Resume file is required");
+  }
 
-return res.status(200).json({
-  success: true,
-  message: "Resume received successfully",
-  file: {
-    originalname: req.file?.originalname,
-    mimetype: req.file?.mimetype,
-    size: req.file?.size,
-  },
-});
+  const result = await uploadResume(req.file);
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      result,
+      "Resume uploaded successfully"
+    )
+  );
 };
