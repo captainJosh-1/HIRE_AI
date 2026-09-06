@@ -11,7 +11,8 @@ export const uploadResumeController = async (
     throw new ApiError(400, "Resume file is required");
   }
 
-  const result = await uploadResume(req.file);
+  const { userId } = req.user!;
+  const result = await uploadResume(userId,req.file);
 
   return res.status(200).json(
     new ApiResponse(
