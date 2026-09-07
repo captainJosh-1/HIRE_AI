@@ -1,3 +1,4 @@
+import { Prisma } from "../../../generated/prisma/browser.js";
 import prisma from "../../../lib/prisma.js";
 import { ApiError } from "../../../utils/ApiError.js";
 
@@ -70,7 +71,11 @@ if(!currentUser){
     throw new ApiError(404,"profile not found")
 }
 
-const currentExperience = currentUser.experiences
+const currentExperience = await prisma.experience.findMany({
+    where:{
+        jobSeekerProfileId:currentUser.id
+    }
+})
 
 return currentExperience;
 }
@@ -136,13 +141,11 @@ const updateExpe = async(
     if (currentlyWorking !== undefined) updateData.currentlyWorking = currentlyWorking;
     if (description !== undefined) updateData.description = description;
 
-    const updateExperience = await prisma.experienec.update({
+    const updateExperience = await prisma.experience.update({
         where:{
             id:experienceId
         },
-        data:{
-            updateData
-        }
+        data:updateData
     })
 
     return updateExperience;
