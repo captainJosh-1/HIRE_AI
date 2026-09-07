@@ -12,7 +12,8 @@ import{ router as projectRoutes } from "./modules/jobSeeker/projects/project.rou
 import { router as resumeRoutes }from "./modules/jobSeeker/resume/resume.routes.js";
 
 
-import {router as recruiterRoutes} from "./modules/recruiter/profile/recruiterProfile.routes.js"
+import {router as recruiterRoutes} from "./modules/recruiter/profile/recruiterProfile.routes.js";
+import {router as companyRoutes} from "./modules/recruiter/company/company.routes.js";
 const app = express();
 
 
@@ -24,7 +25,7 @@ app.use(express.json());
 
 app.use("/api/v1/auth" , authRouters);
 
-
+// /api/v1/job-seekers
 app.use("/api/v1/job-seekers",profileRoutes)
 app.use("/api/v1/job-seekers",skillRoutes)
 app.use("/api/v1/job-seekers",eduRoutes)
@@ -34,7 +35,8 @@ app.use("/api/v1/job-seekers", resumeRoutes);
 
 
 
-
+// /api/v1/recruiters/
 app.use("/api/v1/recruiters", recruiterRoutes);
+app.use("/api/v1/recruiters", companyRoutes);
 
 export default app;
