@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { asyncHandler } from "../../../middleware/asyncHandler.js";
-import { createCompany, getCompany } from "./company.services.js";
+import { createCompany, getCompany, updateCompany } from "./company.services.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 
 
@@ -35,4 +35,29 @@ const company = await getCompany(userId)
     res.status(200).json(new ApiResponse(200,company,"company is fetched successfully"))
 })
 
-export {createCompanyController,getCompanyController};
+const updateCompanyController = asyncHandler(async(req:Request,res:Response)=>{
+    const { userId }= req.user!
+
+    const {
+        name,
+        description,
+        website,
+        location,
+        industry
+    } = req.body;
+
+    const updatingComapny = await updateCompany(
+        userId,
+        name,
+        description,
+        website,
+        location,
+        industry
+    );
+
+        res.status(200).json(new ApiResponse(200,updatingComapny,"company is updated successfully"))
+
+})
+
+
+export {createCompanyController,getCompanyController,updateCompanyController};
