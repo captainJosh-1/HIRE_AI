@@ -23,7 +23,14 @@ const recruiterProfile = await prisma.recruiterProfile.findUnique({
 if(!recruiterProfile){
     throw new ApiError(400,"Recruiter's Profile not found")
 }
-
+const existingCompany  = await prisma.company.findUnique({
+    where:{
+        recruiterProfileId:recruiterProfile.id
+    }
+})
+if(existingCompany ){
+    throw new ApiError(400,"You already have an company")
+}
 const Company= await prisma.company.create({
     data:{
     name,
@@ -70,6 +77,10 @@ const company = await prisma.company.findUnique({
         recruiterProfileId:recruiterProfile.id 
     }
 })
+
+if(!company){
+    throw new ApiError(400 , "Company doesn't exist")
+}
 
 return company;
 }
