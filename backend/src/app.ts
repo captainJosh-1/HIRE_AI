@@ -14,6 +14,7 @@ import { router as resumeRoutes }from "./modules/jobSeeker/resume/resume.routes.
 
 import {router as recruiterRoutes} from "./modules/recruiter/profile/recruiterProfile.routes.js";
 import {router as companyRoutes} from "./modules/recruiter/company/company.routes.js";
+import { router as jobRoutes } from "./modules/recruiter/job/job.routes.js";
 const app = express();
 
 
@@ -38,5 +39,6 @@ app.use("/api/v1/job-seekers", resumeRoutes);
 // /api/v1/recruiters/
 app.use("/api/v1/recruiters", recruiterRoutes);
 app.use("/api/v1/recruiters", companyRoutes);
+app.use("/api/v1/recruiters", jobRoutes);
 
 export default app;
