@@ -234,17 +234,67 @@ const updateJob = async (
     if (updateData.requirements !== undefined) {data.requirements = updateData.requirements}
     if (updateData.responsibilities !== undefined) {data.responsibilities = updateData.responsibilities}
     if (updateData.deadline !== undefined) {data.deadline = updateData.deadline}
-    if (updateData.status !== undefined) {data.status = updateData.status}
+    if (updateData.status !== undefined) {data.status = updateData.status as JobStatus}
 
 
     const updatedJob = await prisma.job.update({
         where: {
             id: jobId
         },
-        data:true
+        data:data
     })
 
     return updatedJob;
 };
 
-export { creatingJob, getjob, deleteJob ,updateJob};
+const updateJobStatus = async (
+  userId: number,
+  jobId: number,
+  status: JobStatus
+) => {
+
+
+  const recruiterProfile = await prisma.recruiterProfile.findUnique({
+    where: { userId }
+  })
+
+  if (!recruiterProfile) {
+    throw new ApiError(404, "Recruiter profile is not found");
+  }
+
+  const company = await prisma.company.findUnique({
+    where: {
+      recruiterProfileId: recruiterProfile.id
+    }
+  })
+  if (!company) {
+    throw new ApiError(404, "Company is not found");
+  }
+
+  const job = await prisma.job.findUnique({
+    where: {
+      id: jobId
+    }
+  });
+
+  if (!job) {
+    throw new ApiError(404, "Job is not found");
+  }
+
+  if (job.companyId !== company.id) {
+    throw new ApiError(403,"You are not allowed to update this job")
+  }
+
+  const updatedJob = await prisma.job.update({
+    where: {
+        id:jobId
+    },
+    data: {
+      status
+    }
+  })
+
+  return updatedJob;
+};
+
+export { creatingJob, getjob, deleteJob ,updateJob,updateJobStatus};

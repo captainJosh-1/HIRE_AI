@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { authMiddleware } from "../../../middleware/auth.middleware.js";
 import { requireRole } from "../../../middleware/role.middleware.js";
-import { createJobController, deleteJobController, getJobController, updateJobController } from "./job.controller.js";
+import { createJobController, deleteJobController, getJobController, updateJobController, updateJobStatusController } from "./job.controller.js";
 // import { createCompanyController, getCompanyController, updateCompanyController } from "./company.controller.js";
 
 
@@ -31,5 +31,11 @@ router.patch(
     requireRole("RECRUITER"),
     updateJobController
 )
+router.patch(
+  "/jobStatus/:jobId/status",
+  authMiddleware,
+  requireRole("RECRUITER"),
+  updateJobStatusController
+);
 
 export {router};

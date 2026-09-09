@@ -1,7 +1,7 @@
 // import type { Request,Response } from "express";
 import type { Request , Response } from "express";
 import { asyncHandler } from "../../../middleware/asyncHandler.js";
-import { creatingJob,getjob,deleteJob, updateJob } from "./job.services.js";
+import { creatingJob,getjob,deleteJob, updateJob, updateJobStatus } from "./job.services.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { EmploymentType, JobStatus } from "../../../generated/prisma/client.js";
 
@@ -72,4 +72,21 @@ const updateJobController = asyncHandler(async (req: Request, res: Response) => 
  res.status(200).json(new ApiResponse(200,updatedJob,"Job updated successfully"));
 });
 
-export {createJobController,getJobController,deleteJobController,updateJobController};
+const updateJobStatusController = asyncHandler(async (req: Request, res: Response) => {
+ const { userId } = req.user!;
+ const { jobId } = req.params;
+ const { status } = req.body;
+
+ const updatedJob = await updateJobStatus(
+   userId,
+   Number(jobId),
+   status
+ );
+
+ res.status(200).json(
+   new ApiResponse(200,updatedJob,"Job status updated successfully")
+    );
+  }
+);
+
+export {createJobController,getJobController,deleteJobController,updateJobController,updateJobStatusController};
