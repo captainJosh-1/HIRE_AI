@@ -1,5 +1,3 @@
-import { application } from "express";
-// import type { ApplicationStatus } from "../../../generated/prisma/enums.js";
 import prisma from "../../../lib/prisma.js";
 import { ApiError } from "../../../utils/ApiError.js";
 
@@ -69,4 +67,117 @@ const application = await prisma.application.create({
 return application;
 }
 
-export {applyingToJob};
+const getMyApplications = async(
+    userId:number
+)=>{
+//get userId 
+//find current user
+//error
+//find that appilication by jobSeekerProfileId (findMany)
+// return
+
+const currentUser =await prisma.jobSeekerProfile.findUnique({
+    where:{
+        userId
+    }
+})
+
+if(!currentUser){
+    throw new ApiError(404,"Job seeker profile not found")
+};
+
+const allApplications = await prisma.application.findMany({
+    where:{
+        jobSeekerProfileId:currentUser.id
+    }
+})
+if(!allApplications){
+    throw new ApiError(200,"Job applications are not found")
+}
+
+return allApplications;
+
+}
+
+
+const getMyOneApplication = async(
+    userId:number,
+    jobId:number
+)=>{
+//get userId 
+//find current user
+//error
+//find that appilication by jobSeekerProfileId and  jobId both should be there
+// return
+
+const currentUser =await prisma.jobSeekerProfile.findUnique({
+    where:{
+        userId
+    }
+})
+
+if(!currentUser){
+    throw new ApiError(404,"Job seeker profile not found")
+};
+
+const oneApplication = await prisma.application.findUnique({
+    where:{
+        jobSeekerProfileId_jobId:{
+                jobSeekerProfileId: currentUser.id,
+                jobId
+        }
+    }
+})
+if(!oneApplication){
+    throw new ApiError(200,"Job application is not found")
+}
+
+return oneApplication;
+
+}
+
+const deleteMyApplication = async(
+    userId:number,
+    applicationId:number
+)=>{
+//get userId 
+//find current user
+//error
+//find application using applicationId and jobSeekerProfileId
+//error
+//delete taht application
+//return
+
+const currentUser =await prisma.jobSeekerProfile.findUnique({
+    where:{
+        userId
+    }
+})
+
+if(!currentUser){
+    throw new ApiError(404,"Job seeker profile not found")
+};
+
+const application = await prisma.application.findUnique({
+    where:{
+        id:applicationId
+        }
+})
+if(!application){
+   throw new ApiError(404,"Application not found")
+};
+
+if(application.jobSeekerProfileId !== currentUser.id){
+    throw new ApiError(403 , "You cannot withdraw this application");
+}
+const deletedApplication = await prisma.application.delete({
+    where:{
+        id :applicationId
+    }
+});
+
+return deletedApplication;
+}
+
+
+export {applyingToJob,getMyApplications,getMyOneApplication,deleteMyApplication};
