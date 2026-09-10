@@ -11,10 +11,10 @@ import {router as expiRoutes } from "./modules/jobSeeker/experience/experience.r
 import{ router as projectRoutes } from "./modules/jobSeeker/projects/project.routes.js"
 import { router as resumeRoutes }from "./modules/jobSeeker/resume/resume.routes.js";
 
-
 import {router as recruiterRoutes} from "./modules/recruiter/profile/recruiterProfile.routes.js";
 import {router as companyRoutes} from "./modules/recruiter/company/company.routes.js";
 import { router as jobRoutes } from "./modules/recruiter/job/job.routes.js";
+import {router as applicationRouters } from "./modules/recruiter/application/apply.routes.js"
 const app = express();
 
 
@@ -40,5 +40,6 @@ app.use("/api/v1/job-seekers", resumeRoutes);
 app.use("/api/v1/recruiters", recruiterRoutes);
 app.use("/api/v1/recruiters", companyRoutes);
 app.use("/api/v1/recruiters", jobRoutes);
+app.use("/api/v1/recruiters", applicationRouters);
 
 export default app;
