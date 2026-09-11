@@ -1,3 +1,4 @@
+import type {  JobStatus } from "../../../generated/prisma/enums.js";
 import prisma from "../../../lib/prisma.js";
 import { ApiError } from "../../../utils/ApiError.js";
 
@@ -99,7 +100,7 @@ return allApplications;
 
 }
 
-
+//need a postman check 
 const getMyOneApplication = async(
     userId:number,
     jobId:number
@@ -135,7 +136,7 @@ if(!oneApplication){
 return oneApplication;
 
 }
-
+//need a postman check 
 const deleteMyApplication = async(
     userId:number,
     applicationId:number
@@ -179,5 +180,202 @@ const deletedApplication = await prisma.application.delete({
 return deletedApplication;
 }
 
+//NOW IM CREATING APIS FOR RECRUITER SIDE 
 
-export {applyingToJob,getMyApplications,getMyOneApplication,deleteMyApplication};
+const getApplicants = async(
+    userId:number,
+    jobId:number
+)=>{
+//get userId 
+//find recruiter Id 
+//error
+//find company
+//error 
+//find job
+//error 
+//check this job belong to this recruiter
+//error
+//find all applications fro this job
+//return application for this job
+const currentRecruiter = await prisma.recruiterProfile.findUnique({
+    where:{
+        userId
+    }
+})
+if(!currentRecruiter){
+    throw new ApiError(404, "Recruiter is not found")
+}
+
+const company =await prisma.company.findUnique({
+    where:{
+        recruiterProfileId:currentRecruiter.id
+    }
+})
+if(!company){
+    throw new ApiError(404, "company is not found")
+}
+const currentJob = await prisma.job.findUnique({
+    where:{
+        id:jobId
+    }
+})
+
+if(!currentJob){
+    throw new ApiError(404, "job didn't exist")
+}
+
+if(currentJob.companyId !== company.id){
+    throw new ApiError(403, "you are not allowed see applicants of this job")
+}
+const allApplicants = await prisma.application.findMany({
+    where:{
+        jobId:jobId
+    }
+})
+
+if(!allApplicants){
+    throw new ApiError(404, "there are no applicants for this job")
+}
+
+return allApplicants;
+}
+
+const getOneApplication = async(
+    userId:number,
+    applicationId:number
+)=>{
+//get userId 
+//find recruiter Id 
+//error
+//find company
+//error 
+//find job
+//error 
+
+//find application by applicationId
+//error
+//check application belong to job 
+//owned by thsi recruiter ?
+//error
+//return application 
+const currentRecruiter = await prisma.recruiterProfile.findUnique({
+    where:{
+        userId
+    }
+})
+if(!currentRecruiter){
+    throw new ApiError(404, "Recruiter is not found")
+}
+
+const company =await prisma.company.findUnique({
+    where:{
+        recruiterProfileId:currentRecruiter.id
+    }
+})
+if(!company){
+    throw new ApiError(404, "company is not found")
+}
+// const currentJob = await prisma.job.findUnique({
+//     where:{
+//         companyId:company.id
+//     }
+// })
+
+// if(!currentJob){
+//     throw new ApiError(404, "job didn't exist")
+// }
+const application = await prisma.application.findUnique({
+    where:{
+        id:applicationId
+    }
+})
+if(!application){
+    throw new ApiError(404,"application not found")
+}
+  const currentJob = await prisma.job.findUnique({
+    where: {
+      id: application.jobId
+    }
+  });
+
+  if (!currentJob) {
+    throw new ApiError(404, "Job didn't exist");
+  }
+
+ if (currentJob.companyId !== company.id) {
+    throw new ApiError(403,"You are not allowed to see this application" );
+  }
+
+return application;
+}
+
+const updateStatus = async(
+    userId:number,
+    applicationId:number,
+    status: ApplicationStatus
+
+)=>{
+//get recruiter
+//error
+//get company 
+//error
+//get job
+//error
+//now update status
+//return
+
+const currentRecruiter = await prisma.recruiterProfile.findUnique({
+    where:{
+        userId
+    }
+})
+if(!currentRecruiter){
+    throw new ApiError(404, "Recruiter is not found")
+}
+
+const company =await prisma.company.findUnique({
+    where:{
+        recruiterProfileId:currentRecruiter.id
+    }
+})
+if(!company){
+    throw new ApiError(404, "company is not found")
+}
+
+const application = await prisma.application.findUnique({
+    where: {
+      id:applicationId
+    }
+})
+
+if (!application) {
+    throw new ApiError(404, "Application not found");
+}
+
+const currentJob = await prisma.job.findUnique({
+where: {
+    id: application.jobId
+}
+});
+
+if (!currentJob) {
+  throw new ApiError(404, "Job not found");
+}
+
+if (currentJob.companyId !== company.id) {
+  throw new ApiError(403,"You are not allowed to update this application");
+}
+
+  const updatedApplication = await prisma.application.update({
+    where: {
+      id: applicationId
+    },
+    data: {
+      status
+    }
+  });
+
+  return updatedApplication;
+}
+export {applyingToJob,getMyApplications,getMyOneApplication,deleteMyApplication,
+    getApplicants,getOneApplication,updateStatus};
