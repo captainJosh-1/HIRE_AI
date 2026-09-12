@@ -15,6 +15,8 @@ import {router as recruiterRoutes} from "./modules/recruiter/profile/recruiterPr
 import {router as companyRoutes} from "./modules/recruiter/company/company.routes.js";
 import { router as jobRoutes } from "./modules/recruiter/job/job.routes.js";
 import {router as applicationRouters } from "./modules/recruiter/application/apply.routes.js"
+
+import {router as aiRoutes} from "./modules/ai/ai.routes.js"
 const app = express();
 
 
@@ -41,5 +43,8 @@ app.use("/api/v1/recruiters", recruiterRoutes);
 app.use("/api/v1/recruiters", companyRoutes);
 app.use("/api/v1/recruiters", jobRoutes);
 app.use("/api/v1/recruiters", applicationRouters);
+
+// /api/v1/ai/
+app.use("/api/v1/ai", aiRoutes);
 
 export default app;
