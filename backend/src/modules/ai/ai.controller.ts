@@ -8,6 +8,7 @@ import { analyzeResume } from "./ai.services.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import prisma from "../../lib/prisma.js";
 import { matchResumeWithJob } from "./jobMatch.service.js";
+import { number } from "zod";
 
 const analyzeResumeController = asyncHandler(async(req:Request , res:Response)=>{
 
@@ -59,6 +60,10 @@ const analyzeResumeController = asyncHandler(async(req:Request , res:Response)=>
 const matchResumeWithJobController = asyncHandler(async(req:Request , res:Response)=>{
   const {userId} = req.user!
   const jobId = Number(req.params.jobId)
+
+if (!Number.isInteger(jobId) || jobId <= 0) {
+  throw new ApiError(400, "Invalid job ID");
+}
 
   const profile = await prisma.jobSeekerProfile.findUnique({
     where:{

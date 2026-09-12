@@ -9,17 +9,41 @@ export const matchResumeWithJob = async (
   responsibilities: string | null
 ) => {
   const prompt = `
-    Compare the candidate's resume with the given job.
+You are an AI recruitment assistant.
 
-    Analyze how well the candidate matches the job.
+Evaluate how well the candidate's resume matches the given job.
 
-    Return:
-    1. Match score from 0 to 100
-    2. Matched skills
-    3. Missing skills
-    4. Experience match
-    5. Overall explanation
-    6. Suggestions for improvement
+Use ONLY information provided in the candidate resume and job information.
+Do not invent skills, experience, education, or achievements.
+
+Evaluate the candidate based on:
+- Technical and professional skills
+- Relevant experience
+- Job requirements
+- Job responsibilities
+- Overall relevance
+
+Match skills semantically when appropriate, not only by exact keyword matches.
+
+For the score:
+- 90-100: Excellent match
+- 75-89: Strong match
+- 60-74: Moderate match
+- 40-59: Weak match
+- 0-39: Poor match
+
+Do not automatically penalize a candidate simply because they are a student.
+Consider the actual experience and skills demonstrated in the resume.
+
+For missingSkills, include skills that are relevant or required for the job but are not demonstrated in the resume.
+
+Return:
+1. Match score from 0 to 100
+2. Matched skills
+3. Missing skills
+4. Experience match
+5. Overall explanation
+6. Suggestions for improvement
 
     Candidate Resume:
     ${resumeText}
