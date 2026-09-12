@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/captainJosh-1/AI-Job-Board#readme",
   "dependencies": {
+    "@google/genai": "^2.22.0",
     "@prisma/adapter-pg": "^7.9.1",
     "@prisma/client": "^7.9.1",
     "@types/jsonwebtoken": "^9.0.10",
