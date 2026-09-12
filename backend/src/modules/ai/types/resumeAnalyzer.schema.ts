@@ -6,7 +6,7 @@
 
 
 import { z } from "zod";
-
+import { Type } from "@google/genai";
 export const resumeAnalyzerSchema = z.object({
   score: z.number().min(0).max(100),
 
@@ -18,6 +18,48 @@ export const resumeAnalyzerSchema = z.object({
 
   suggestions: z.array(z.string()),
 });
+
+
+
+ export const resumeAnalyzerGeminiSchema = {
+        type: Type.OBJECT,
+        properties: {
+          score: {
+            type: Type.NUMBER,
+          },
+          strengths: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.STRING,
+            },
+          },
+          weaknesses: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.STRING,
+            },
+          },
+          missingSkills: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.STRING,
+            },
+          },
+          suggestions: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.STRING,
+            },
+          },
+        },
+        required: [
+          "score",
+          "strengths",
+          "weaknesses",
+          "missingSkills",
+          "suggestions",
+        ],
+      }
 
 export type ResumeAnalyzerResponse = z.infer<
   typeof resumeAnalyzerSchema

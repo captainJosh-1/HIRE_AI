@@ -1,5 +1,5 @@
 import { generateAIResponse } from "./ai.provider.js"
-import { resumeAnalyzerSchema } from "./types/resumeAnalyzer.schema.js";
+import { resumeAnalyzerSchema ,resumeAnalyzerGeminiSchema} from "./types/resumeAnalyzer.schema.js";
 
 export const analyzeResume =async(resumeText :string)=>{
 
@@ -18,7 +18,7 @@ export const analyzeResume =async(resumeText :string)=>{
     ${resumeText}
     `;
 
-    const aiResponse  = await generateAIResponse(prompt);
+    const aiResponse  = await generateAIResponse(prompt,resumeAnalyzerGeminiSchema);
 
     if (!aiResponse) {
     throw new Error("AI returned empty response");
