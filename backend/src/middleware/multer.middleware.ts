@@ -4,7 +4,7 @@ const storage = multer.memoryStorage();
 
 const fileFilter: multer.Options["fileFilter"] = (_req, file, cb) => {
   const isPdf =
-    file.mimetype === "application/pdf" ||
+    file.mimetype === "application/pdf" &&
     file.originalname.toLowerCase().endsWith(".pdf");
 
   if (isPdf) {

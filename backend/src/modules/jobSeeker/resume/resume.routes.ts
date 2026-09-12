@@ -7,8 +7,8 @@ const router = Router();
 
 router.post(
   "/uploadResume",
-  upload.single("resume"),
   authMiddleware,
+  upload.single("resume"),
   uploadResumeController
 );
 
