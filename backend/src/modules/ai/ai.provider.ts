@@ -10,12 +10,12 @@ if (!GEMINI_API_KEY) {
 const ai = new GoogleGenAI({
    apiKey: GEMINI_API_KEY
 });
-
-async function main() {
-   const response  = await ai.models.generateContent({
+export const generateAIResponse = async(prompt :string)=>{
+   
+       const response  = await ai.models.generateContent({
        model: 'gemini-3.6-flash',
-       contents: 'Why is the sky blue?'
+       contents: prompt,
    });
-   console.log(response.text);
-}
-main();
+
+   return response.text;
+};
