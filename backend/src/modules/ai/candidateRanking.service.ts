@@ -55,8 +55,12 @@ const applications = await prisma.application.findMany({
     }
 })
 
+
+
 //to store results
 const rankingResults = [];
+
+
 
 //loop
 for (const application  of applications){
@@ -90,7 +94,7 @@ if(!resumeText.trim()) {
 const matchResult = await matchResumeWithJob(
     resumeText,
     job.title,
-    job.jobDescription,
+    job.description ,
     job.requirements,
     job.responsibilities
 );
@@ -98,13 +102,22 @@ const matchResult = await matchResumeWithJob(
 rankingResults.push({
     candidateId,
     candidateName,
-    ...matchResult,
+    score: matchResult.score,
+    matchedSkills: matchResult.matchedSkills,
+    missingSkills: matchResult.missingSkills,
+    experienceMatch: matchResult.experienceMatch,
 });
 }
 
 rankingResults.sort((a,b)=> b.score  - a.score);
 
-return rankingResults;
+
+const rankedCandidates = rankingResults.map((candidate , index)=>({
+    rank: index + 1,
+    ...candidate,
+}))
+
+return rankedCandidates;
 };
 
 export{rankCandidates}
