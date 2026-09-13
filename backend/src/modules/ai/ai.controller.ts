@@ -8,7 +8,7 @@ import { analyzeResume } from "./ai.services.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import prisma from "../../lib/prisma.js";
 import { matchResumeWithJob } from "./jobMatch.service.js";
-import { number } from "zod";
+import { rankCandidates } from "./candidateRanking.service.js";
 
 const analyzeResumeController = asyncHandler(async(req:Request , res:Response)=>{
 
@@ -126,4 +126,22 @@ if (!Number.isInteger(jobId) || jobId <= 0) {
 
 })
 
-export {analyzeResumeController,matchResumeWithJobController }
+
+const rankCandidatesController =  asyncHandler(async(req:Request , res:Response)=>{
+  const recruiterUserId = req.user!.userId;
+  const jobId = Number(req.params.jobId);
+
+  if(!Number.isInteger(jobId) || jobId <= 0 ) {
+    throw new ApiError(400, "Invalid job ID");
+  }
+
+  const result = await rankCandidates(
+    recruiterUserId,
+    jobId
+  );
+
+  return res.status(200).json( new ApiResponse(200,result, "Candidated ranked successfully"));
+
+})
+
+export {analyzeResumeController,matchResumeWithJobController,rankCandidatesController }
