@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import { authMiddleware } from "../../middleware/auth.middleware.js";
 
-import { analyzeResumeController, matchResumeWithJobController, rankCandidatesController } from "./ai.controller.js";
+import { analyzeResumeController, generateCoverLetterController, matchResumeWithJobController, rankCandidatesController } from "./ai.controller.js";
 import { requireRole } from "../../middleware/role.middleware.js";
 
 const router = Router();
@@ -24,6 +24,13 @@ router.post(
   authMiddleware,
   requireRole("RECRUITER"),
   rankCandidatesController
+);
+
+router.post(
+  "/cover-letter/:jobId",
+  authMiddleware,
+  requireRole("JOB_SEEKER"),
+  generateCoverLetterController
 );
 
 export { router };

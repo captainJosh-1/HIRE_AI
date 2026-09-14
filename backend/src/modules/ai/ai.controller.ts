@@ -9,6 +9,7 @@ import { ApiResponse } from "../../utils/ApiResponse.js";
 import prisma from "../../lib/prisma.js";
 import { matchResumeWithJob } from "./jobMatch.service.js";
 import { rankCandidates } from "./candidateRanking.service.js";
+import { generateCoverLetter } from "./coverLetter.service.js";
 
 const analyzeResumeController = asyncHandler(async(req:Request , res:Response)=>{
 
@@ -144,4 +145,66 @@ const rankCandidatesController =  asyncHandler(async(req:Request , res:Response)
 
 })
 
-export {analyzeResumeController,matchResumeWithJobController,rankCandidatesController }
+const generateCoverLetterController = asyncHandler(async(req: Request, res: Response)=>{
+  const userId = req.user!.userId;
+
+  const jobId = Number(req.params.jobId);
+
+  if(!Number.isInteger(jobId) || jobId <= 0) {
+    throw new ApiError(400 , "Invalid job ID");
+  }
+
+  const profile = await prisma.jobSeekerProfile.findUnique({
+    where:{
+      userId
+    },
+    include:{
+      resume:true
+    },
+  });
+
+  if(!profile){
+    throw new ApiError(404 , "Job seeler profile not found");
+  }
+
+  if(!profile.resume) {
+   throw new ApiError(404 , "resume not found");
+  }
+
+  const job = await prisma.job.findUnique({
+    where:{
+      id:jobId
+    }
+  })
+
+  if(!job){
+    throw new ApiError(404, "Job not found");
+  }
+
+  const response = await fetch(profile.resume.fileUrl);
+
+  if(!response.ok){
+    throw new ApiError(500, "Failed to fetch resume");
+  }
+
+  const arrrayBuffer = await response.arrayBuffer();
+  const buffer = Buffer.from(arrrayBuffer);
+
+
+  const resumeText = await extractPdfText(buffer);
+
+  if(!resumeText.trim()) {
+    throw new ApiError(400,"Cloud not extract text from resume")
+  }
+  const result = await generateCoverLetter(
+    resumeText,
+    job.title,
+    job.description,
+    job.requirements,
+    job.responsibilities
+  );
+
+  return res.status(200).json(new ApiResponse(200 , result , "Cover letter genrated successfully"))
+});
+
+export {analyzeResumeController,matchResumeWithJobController,rankCandidatesController,generateCoverLetterController }
