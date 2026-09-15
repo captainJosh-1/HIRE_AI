@@ -5,12 +5,84 @@ import { getMyProfileController , updateProfileController } from "./jobSeeker.co
 
 const router = Router();
 
+/**
+ * @swagger
+ * /api/v1/job-seekers/me:
+ *   get:
+ *     summary: Get the logged-in job seeker's profile
+ *     tags: [JobSeeker]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Job seeker profile retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *                 phone:
+ *                   type: string
+ *                 resumeUrl:
+ *                   type: string
+ *                 skills:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *       401:
+ *         description: Unauthorized - missing or invalid token
+ *       403:
+ *         description: Forbidden - user is not a JOB_SEEKER
+ */
+
 router.get(
     "/me",
     authMiddleware,
     requireRole("JOB_SEEKER"),
     getMyProfileController
 );
+
+/**
+ * @swagger
+ * /api/v1/job-seekers/updateprofile:
+ *   put:
+ *     summary: Update the logged-in job seeker's profile
+ *     tags: [JobSeeker]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               resumeUrl:
+ *                 type: string
+ *               skills:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *     responses:
+ *       200:
+ *         description: Profile updated successfully
+ *       400:
+ *         description: Invalid request body
+ *       401:
+ *         description: Unauthorized - missing or invalid token
+ *       403:
+ *         description: Forbidden - user is not a JOB_SEEKER
+ */
 
 router.put(
     "/updateprofile",
@@ -19,25 +91,5 @@ router.put(
     updateProfileController
 )
 
-// router.post(
-//     "/skills",
-//     authMiddleware,
-//     requireRole("JOB_SEEKER"),
-//     addSkillController
-// )
-
-// router.get(
-//     "/getmyskills",
-//     authMiddleware,
-//     requireRole("JOB_SEEKER"),
-//     getMySkillController
-// )
-
-// router.delete(
-//     "/deleteskill/:skillId",
-//     authMiddleware,
-//     requireRole("JOB_SEEKER"),
-//     deleteMySkills
-// )
 
 export { router };
