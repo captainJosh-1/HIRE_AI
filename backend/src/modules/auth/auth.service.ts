@@ -15,11 +15,11 @@ const registerUser = async (
     });
 
     if(existingUser){
-        throw new ApiError(409 , "User already exists");
+        throw new ApiError(409, "User already exists");
     }
 
     if( role !== "JOB_SEEKER" && role !== "RECRUITER"){
-        throw new ApiError(409 , "User already exists");
+        throw new ApiError(400 , "Invalid user role");
     }
 
 

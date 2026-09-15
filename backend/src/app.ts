@@ -17,13 +17,17 @@ import { router as jobRoutes } from "./modules/recruiter/job/job.routes.js";
 import {router as applicationRouters } from "./modules/recruiter/application/apply.routes.js"
 
 import {router as aiRoutes} from "./modules/ai/ai.routes.js"
+
+import swaggerUi from "swagger-ui-express"
+import { swaggerSpec } from "./config/swagger.js"
+
 const app = express();
 
 
 app.use(cors());
 app.use(express.json());
 
-
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 //"/api/v1/auth"
 
 app.use("/api/v1/auth" , authRouters);
