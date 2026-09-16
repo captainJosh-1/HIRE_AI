@@ -28,6 +28,9 @@ const router = Router()
  *                 type: string
  *               type:
  *                 type: string
+ *                 enum: [FULL_TIME, PART_TIME, ONLINE]
+ *                 default: FULL_TIME
+ *                 description: Type of education
  *               startYear:
  *                 type: integer
  *               endYear:
@@ -77,6 +80,9 @@ router.post(
  *                 type: string
  *               type:
  *                 type: string
+ *                 enum: [FULL_TIME, PART_TIME, ONLINE]
+ *                 default: FULL_TIME
+ *                 description: Type of education
  *               startYear:
  *                 type: integer
  *               endYear:

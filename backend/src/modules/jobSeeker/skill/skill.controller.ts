@@ -36,7 +36,7 @@ const deleteMySkills = asyncHandler(async(req:Request , res:Response)=>{
         Number(skillId)
     )
 
-    return res.status(200).json(new ApiResponse(200 , deleteSkill , "Skill is delted"))
+    return res.status(200).json(new ApiResponse(200 , deleteSkill , "Skill is deleted"))
 })
 
 export {addSkillController , getMySkillController, deleteMySkills}
