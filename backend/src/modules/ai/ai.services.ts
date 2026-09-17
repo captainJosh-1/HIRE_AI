@@ -32,7 +32,6 @@ export const analyzeResume =async(resumeText :string)=>{
         throw new Error("AI returned invalid JSON")
     }
 
-    //validate by zod 
     const validatedResponse = resumeAnalyzerSchema.safeParse(parsedResponse);
 
     if (validatedResponse.success) {

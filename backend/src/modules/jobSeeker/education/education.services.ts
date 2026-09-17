@@ -14,12 +14,6 @@ const addEducation = async (
     currentlyStudying: boolean
 ) => {
 
-    //get all the body data and userId 
-    //check this profile is exist
-    //find education
-    //create record in education
-    //return 
-
     const jobSeeker = await prisma.jobSeekerProfile.findUnique({
         where: {
             userId

@@ -56,9 +56,7 @@ const registerUser = async (
 
     return safeUser;
 };
-
-
-//now lets login the user 
+ 
 
 const loginUser = async (
     email:string,

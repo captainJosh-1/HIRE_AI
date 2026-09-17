@@ -37,10 +37,6 @@ if(job.companyId !== recruiterProfile.company.id){
     throw new ApiError(403 , "You are not authorized to rank candidate for this job");
 }
 
-
-
-
-
 const applications = await prisma.application.findMany({
     where:{
         jobId:job.id
@@ -61,8 +57,6 @@ const applications = await prisma.application.findMany({
 const rankingResults = [];
 
 
-
-//loop
 for (const application  of applications){
 const candidate = application.jobSeekerProfile;
 const candidateId = candidate.id;
@@ -75,13 +69,13 @@ if(!resume){
   continue;
 }
 
-//fetching pdf from postgresql cloudinaru url saved in DB 
 const response = await fetch(resume.fileUrl);
 
 if(!response.ok){
     continue;
 }
-//now lets convert resume into buffer 
+
+
 const arrayBuffer = await response.arrayBuffer();
 const buffer = Buffer.from(arrayBuffer);
 

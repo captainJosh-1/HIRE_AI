@@ -12,12 +12,6 @@ const addProject = async(
     endDate:string,
     currentlyWorking:string
 )=>{
-//fid the user byUseId 
-//get the JObSeekerProfile
-//if error
-//create the record in project
-//if error 
-//return
 
 const currentUser = await prisma.JobSeekerProfile.findUnique({
     where:{
@@ -52,15 +46,6 @@ return addingProject;
 const getProjects = async(
     userId:number
 )=>{
-//get the userId and projectId
-// then chekc find the jobSeekeProfile
-//stroe it 
-//then extract projects by .
-//return 
-
-//const currentUser = awiat prisma.jobSeekerProfile.findUnique({
-
-
 const currentUser = await prisma.jobSeekerProfile.findUnique({
     where:{
         userId
@@ -81,16 +66,7 @@ const allProjects = await prisma.project.findMany({
 })
 
 return allProjects;
-}
-
-
-//get the useriD AND projectId
-//GET TEH JOBSEEKER INCLUDE projects 
-//get the project which we have to delte 
-// check by if condition the user is same 
-//delete the project 
-//return the remaining rpject 
-//and get them by ower id and jobSeekkerId in project 
+} 
 
 const deleteProject = async (
   userId: number,
@@ -147,13 +123,6 @@ const updateProject = async(
     endDate?:string,
     currentlyWorking?:string
 )=>{
-//get userId and projectId 
-//find user 
-//errorif not found 
-// then find project whch we wnat to update 
-//then check by if condition 
-//thens update data 
-//return
 
 const currentUser =await prisma.jobSeekerProfile.findUnique({
     where:{

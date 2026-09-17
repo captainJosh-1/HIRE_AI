@@ -62,11 +62,6 @@ const uploadResume = async (
 
 return resume;
 
-    // return {
-    //   fileName: file.originalname,
-    //   fileUrl: result.secure_url,
-    //   publicId: result.public_id,
-    // };
   } catch (error) {
     console.error("Cloudinary upload error:", error);
 
@@ -75,9 +70,6 @@ return resume;
       "Failed to upload resume"
     );
   }
-
- 
-  
 };
 
 const getResume = async(
@@ -96,11 +88,6 @@ if(!currentUser){
   throw new ApiError(404,"Profile not found ")
 }
 
-// const getResume = await prisma.resume.findUnique({
-//   where:{
-//     jobSeekerProfileId:currentUser.id
-//   }
-// });
 
 if(!currentUser.resume){
   throw new ApiError(404,"Resume not found")
@@ -113,14 +100,6 @@ const deleteResume = async(
   userId:number
 
 )=>{
-//userID
-//find the jobseeker
-//error 
-//find resume
-// error
-//dekete from cloudinary
-//delte from prisma 
-
 
 const currentUser = await prisma.jobSeekerProfile.findUnique({
   where:{
@@ -158,15 +137,6 @@ const replaceResume = async(
   userId:number,
   file:Express.Multer.File
 )=>{
-//get the userid 
-//error
-//get the resume 
-//error
-//take old publicId
-//detroyed it  from cluodinary
-//upload the new file 
-// take thsoe details from cloudinary 
-//update the prisma row
 
 const currentUser = await prisma.jobSeekerProfile.findUnique({
   where:{

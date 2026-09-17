@@ -3,8 +3,6 @@ import { asyncHandler } from "../../../middleware/asyncHandler.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { addSkills,getMySkills, deleteMyskills } from "./skill.services.js";
 
-
-
 const addSkillController = asyncHandler(async( req:Request , res:Response)=>{
     const { name } = req.body;
     const { userId } = req.user!

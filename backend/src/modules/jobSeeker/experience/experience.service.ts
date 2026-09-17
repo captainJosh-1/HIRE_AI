@@ -1,4 +1,3 @@
-import { Prisma } from "../../../generated/prisma/browser.js";
 import prisma from "../../../lib/prisma.js";
 import { ApiError } from "../../../utils/ApiError.js";
 
@@ -13,13 +12,6 @@ const addExperience = async(
     currentlyWorking:boolean,
     description:string
 )=>{
-
-    //get all the data from body 
-    //get userId
-    //find the user incude expirence
-    //if not found then error 
-    //creaate entry in expirence model by using prisma 
-    // retuen that 
 
     const currentUser = await prisma.jobSeekerProfile.findUnique({
         where:{
@@ -53,10 +45,6 @@ const addExperience = async(
 const getExperience = async(
     userId:number
 )=>{
-//get the suer id from req.user 
-//find the currrent user then 
-// take out the expirence array 
-// and return it 
 
 const currentUser = await prisma.jobSeekerProfile.findUnique({
     where:{
@@ -92,16 +80,6 @@ const updateExpe = async(
     currentlyWorking:string,
     description:string
 )=>{
-    //get the user and expirence id 
-    //get all the data is gonna update
-    //find the cureent user 
-    //then error 
-    //find expirence record 
-    //error
-    //then update them each 
-    //return 
-    
-
     const currentUser = await prisma.jobSeekerProfile.findUnique({
         where:{
             userId
@@ -155,12 +133,6 @@ const deleteExpe= async(
     userId:number,
     experienceId:number
 )=>{
-//get expirence id and userId from re 
-//find currentUser 
-//then extract expirence and
-//verify
-//delete from expirence by expirence id 
-
 
 const currentUser = await prisma.jobSeekerProfile.findUnique({
     where:{

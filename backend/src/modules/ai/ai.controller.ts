@@ -12,13 +12,6 @@ import { rankCandidates } from "./candidateRanking.service.js";
 import { generateCoverLetter } from "./coverLetter.service.js";
 
 const analyzeResumeController = asyncHandler(async(req:Request , res:Response)=>{
-
-    // const file = req.file;
-
-    // if(!file){
-    //     throw new ApiError(400,"Resume PDF is required");
-    // }
-
     const userId = req.user!.userId;
 
     const profile = await prisma.jobSeekerProfile.findUnique({
