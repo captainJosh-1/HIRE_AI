@@ -31,6 +31,9 @@ const analyzeResumeController = asyncHandler(async(req:Request , res:Response)=>
       throw new ApiError(404, "Resume not found, Upload your Resume");
     }
 
+
+    if (!profile.resume.fileUrl) throw new Error("Resume URL not found")
+
     const response = await fetch(profile.resume.fileUrl);
 
     if (!response.ok) {
@@ -89,6 +92,9 @@ if (!Number.isInteger(jobId) || jobId <= 0) {
   const jobDescription = job.description;
   const requirements = job.requirements;
   const responsibilities = job.responsibilities;
+
+
+  if (!profile.resume.fileUrl) throw new Error("Resume URL not found")
 
   const response = await fetch(profile.resume.fileUrl)
   if (!response.ok) {
@@ -173,6 +179,8 @@ const generateCoverLetterController = asyncHandler(async(req: Request, res: Resp
   if(!job){
     throw new ApiError(404, "Job not found");
   }
+
+  if (!profile.resume.fileUrl) throw new Error("Resume URL not found")
 
   const response = await fetch(profile.resume.fileUrl);
 

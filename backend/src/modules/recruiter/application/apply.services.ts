@@ -1,4 +1,4 @@
-import type {  JobStatus } from "../../../generated/prisma/enums.js";
+import type {  ApplicationStatus, JobStatus } from "../../../generated/prisma/enums.js";
 import prisma from "../../../lib/prisma.js";
 import { ApiError } from "../../../utils/ApiError.js";
 

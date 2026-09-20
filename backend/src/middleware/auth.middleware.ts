@@ -1,6 +1,7 @@
 import type {Request , Response , NextFunction } from "express";
 import { ApiError } from "../utils/ApiError.js";
 import { verifyAccessToken } from "../utils/jwt.js";
+import type { UserRole } from "../generated/prisma/enums.js";
 
 const authMiddleware = (
     req : Request,
@@ -26,7 +27,7 @@ if(!token) {
 
 const decoded = verifyAccessToken(token);
 
-req.user = decoded;
+req.user = decoded as {userId :number; role: UserRole};
 
 next();
 };
