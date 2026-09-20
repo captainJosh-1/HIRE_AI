@@ -1,5 +1,6 @@
 import { ApiError } from "../../../utils/ApiError.js";
 import prisma from "../../../lib/prisma.js";
+import type { TypeOfEducation } from "../../../generated/prisma/enums.js";
 
 
 const addEducation = async (
@@ -31,7 +32,7 @@ const addEducation = async (
             degree,
             institution,
             branch,
-            type,
+            type: type as TypeOfEducation,
             startYear,
             endYear,
             grade,

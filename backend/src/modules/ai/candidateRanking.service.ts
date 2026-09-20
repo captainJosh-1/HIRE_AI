@@ -63,16 +63,17 @@ const candidateId = candidate.id;
 const candidateName = candidate.user.name;
 
 
-const resume = candidate.resume;
+const resume = candidate.resume
 
-if(!resume){
-  continue;
+if(!resume || !resume.fileUrl){
+  continue
 }
 
-const response = await fetch(resume.fileUrl);
+const fileUrl = resume.fileUrl as string // ← add this line
 
+const response = await fetch(fileUrl)
 if(!response.ok){
-    continue;
+    continue
 }
 
 

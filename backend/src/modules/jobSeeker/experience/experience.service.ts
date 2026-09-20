@@ -1,3 +1,4 @@
+import type { EmploymentType } from "../../../generated/prisma/enums.js";
 import prisma from "../../../lib/prisma.js";
 import { ApiError } from "../../../utils/ApiError.js";
 
@@ -30,8 +31,7 @@ const addExperience = async(
         data:{
         company,
         position,
-        employmentType,
-        location,
+        employmentType: employmentType as EmploymentType,        location,
         startDate:new Date(startDate),
         endDate:endDate ? new Date(endDate) : null,
         currentlyWorking,

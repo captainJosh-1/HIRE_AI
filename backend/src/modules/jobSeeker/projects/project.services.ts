@@ -13,7 +13,7 @@ const addProject = async(
     currentlyWorking:string
 )=>{
 
-const currentUser = await prisma.JobSeekerProfile.findUnique({
+const currentUser = await prisma.jobSeekerProfile.findUnique({
     where:{
         userId
     },
@@ -30,12 +30,12 @@ const addingProject = await prisma.project.create({
     data:{
        title,
        description,
-       technologies,
+       technologies: technologies ? technologies.split(",") : [],
        projectUrl,
        githubUrl,
        startDate: new Date(startDate),
        endDate: endDate ? new Date(endDate) : null,
-       currentlyWorking,
+       currentlyWorking: currentlyWorking === "true",
        jobSeekerProfileId:currentUser.id
     }
 })

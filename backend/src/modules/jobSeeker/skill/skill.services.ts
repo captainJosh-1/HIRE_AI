@@ -33,7 +33,7 @@ const addSkills = async(
         });
     }
     const alreadyHasSkill =jobseeker.skills.some(
-        (existingSkill) => existingSkill.id === skill.id 
+        (existingSkill: any) => existingSkill.id === skill.id 
     );
 
     if(alreadyHasSkill){
@@ -62,7 +62,7 @@ const addSkills = async(
 const getMySkills = async(
     userId:number
 )=>{
-    const currentUser = await prisma.JobSeekerProfile.findUnique(
+    const currentUser = await prisma.jobSeekerProfile.findUnique(
         {
             where:{
                 userId
@@ -86,7 +86,7 @@ const deleteMyskills = async(
     userId:number,
     skillId:number
 )=>{
-    const currentUser = await prisma.JobSeekerProfile.findUnique(
+    const currentUser = await prisma.jobSeekerProfile.findUnique(
         {
             where:{
                 userId
@@ -101,14 +101,14 @@ const deleteMyskills = async(
     }
 
     const skillExists = currentUser.skills.some(
-        (skill)=> skill.id === skillId
+        (skill: any)=> skill.id === skillId
     );
 
     if(!skillExists){
         throw new ApiError(404 , "Skill is not associated with your profile");
     }
 
-    const deleteSkill = await prisma.JobSeekerProfile.update({
+    const deleteSkill = await prisma.jobSeekerProfile.update({
         where:{
             id:currentUser.id
         },

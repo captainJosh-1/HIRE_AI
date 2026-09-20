@@ -46,13 +46,13 @@ const creatingJob = async (
             title,
             description,
             location,
-            employmentType,
+            employmentType: employmentType as EmploymentType,
             salaryMin,
             salaryMax,
             requirements,
             responsibilities,
             deadline: deadline ? new Date(deadline) : null,
-            status,
+            status: status as JobStatus,
 
             company: {
                 connect: {
